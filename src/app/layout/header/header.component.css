@@ -1,0 +1,16 @@
+.pageHeader{
+  background-color: #f1f1f1;
+  position: absolute;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+}
+
+.spacer{
+  flex: 1;
+}

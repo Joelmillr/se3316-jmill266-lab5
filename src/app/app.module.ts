@@ -10,6 +10,7 @@ import { BodyComponent } from './layout/body/body.component';
 import { AboutComponentComponent } from './layout/body/about-component/about-component.component';
 import { ReferencesComponent } from './layout/references/references.component';
 import { SignInComponentComponent } from './layout/body/sign-in-component/sign-in-component.component';
+import { HeaderSearchComponent } from './layout/header/header-search/header-search.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SignInComponentComponent } from './layout/body/sign-in-component/sign-i
     BodyComponent,
     AboutComponentComponent,
     ReferencesComponent,
-    SignInComponentComponent
+    SignInComponentComponent,
+    HeaderSearchComponent
   ],
   imports: [
     BrowserModule

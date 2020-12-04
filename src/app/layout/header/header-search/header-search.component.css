@@ -1,0 +1,12 @@
+#header_search_courses{
+  color: #8C55AA;
+  padding: 0 15px;
+}
+
+#header_search {
+  text-decoration: none;
+}
+
+#header_search_courses:hover{
+  color: #000000;
+}

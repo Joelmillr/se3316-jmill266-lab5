@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SignInComponentComponent } from './sign-in-component.component';
 
 describe('SignInComponentComponent', () => {

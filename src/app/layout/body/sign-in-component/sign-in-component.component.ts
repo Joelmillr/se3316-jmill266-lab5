@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-in-component',
@@ -6,18 +7,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sign-in-component.component.css']
 })
 export class SignInComponentComponent implements OnInit {
-  username: string = '';
-  password: string = '';
-  constructor() { }
+  email = new FormControl('', [Validators.required,
+     Validators.email]);
 
   ngOnInit(): void {
   }
 
-  // SignIn Function for website
-  signIn(username:HTMLInputElement, password:HTMLInputElement){
-    this.username = username.value;
-    this.password = password.value;
-    alert(this.username + this.password)
+  getErrorMessage() {
+    if (this.email.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return this.email.hasError('email') ? 'Not a valid email' : '';
   }
+  // SignIn Function for website
 
 }

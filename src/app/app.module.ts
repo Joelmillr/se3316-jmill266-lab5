@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './layout/header/header.component';
@@ -11,6 +12,7 @@ import { AboutComponentComponent } from './layout/body/about-component/about-com
 import { ReferencesComponent } from './layout/references/references.component';
 import { SignInComponentComponent } from './layout/body/sign-in-component/sign-in-component.component';
 import { HeaderSearchComponent } from './layout/header/header-search/header-search.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { HeaderSearchComponent } from './layout/header/header-search/header-sear
     HeaderSearchComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

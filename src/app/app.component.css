@@ -3,3 +3,9 @@
   padding: 15px;
   top: 60px;
 }
+
+#references{
+  position: absolute;
+  bottom: 0px;
+  align-content: center;
+}

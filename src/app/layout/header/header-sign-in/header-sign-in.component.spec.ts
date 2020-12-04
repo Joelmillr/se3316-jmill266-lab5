@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SignInTableComponent } from './sign-in-table.component';
+import { HeaderSignInComponent } from './header-sign-in.component';
 
-describe('SignInTableComponent', () => {
-  let component: SignInTableComponent;
-  let fixture: ComponentFixture<SignInTableComponent>;
+describe('HeaderSignInComponent', () => {
+  let component: HeaderSignInComponent;
+  let fixture: ComponentFixture<HeaderSignInComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SignInTableComponent ]
+      declarations: [ HeaderSignInComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SignInTableComponent);
+    fixture = TestBed.createComponent(HeaderSignInComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

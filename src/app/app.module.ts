@@ -6,7 +6,9 @@ import { MatCardModule } from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms'
-
+import {MatIconModule} from '@angular/material/icon';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './layout/header/header.component';
@@ -19,6 +21,10 @@ import { ReferencesComponent } from './layout/references/references.component';
 import { SignInComponentComponent } from './layout/body/sign-in-component/sign-in-component.component';
 import { HeaderSearchComponent } from './layout/header/header-search/header-search.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EmailContainerComponent } from './layout/body/sign-in-component/email-container/email-container.component';
+import { PasswordContainerComponent } from './layout/body/sign-in-component/password-container/password-container.component';
+import { SearchCoursesComponentComponent } from './layout/body/search-courses-component/search-courses-component.component';
+import { NameContainerComponent } from './layout/body/sign-in-component/name-container/name-container.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +38,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReferencesComponent,
     SignInComponentComponent,
     HeaderSearchComponent,
+    EmailContainerComponent,
+    PasswordContainerComponent,
+    SearchCoursesComponentComponent,
+    NameContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +51,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule,
+    MatExpansionModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

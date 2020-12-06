@@ -1,0 +1,22 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Search for course:
+    </mat-panel-title>
+    <mat-panel-description>
+      By: Subject, Course Number
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <mat-form-field>
+    <mat-label>Subject</mat-label>
+    <input matInput placeholder='Ex. "SE"'>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Course Number</mat-label>
+    <input matInput placeholder='Ex. "3316", "3316A"' max="5">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary">Submit</button>
+</mat-expansion-panel>

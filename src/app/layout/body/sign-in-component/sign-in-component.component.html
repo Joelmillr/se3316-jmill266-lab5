@@ -1,7 +1,15 @@
-<div class="example-container">
-  <mat-form-field appearance="fill">
-    <mat-label>Enter your email</mat-label>
-    <input matInput placeholder="pat@example.com" [formControl]="email" required>
-    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-  </mat-form-field>
-</div>
+<mat-card>
+  <mat-tab-group mat-align-tabs="end">
+    <mat-tab label="Sign In">
+      <app-email-container></app-email-container>
+      <app-password-container></app-password-container>
+      <button mat-raised-button color="primary" (click)="testing()">Submit</button>
+    </mat-tab>
+    <mat-tab label="Sign Up">
+      <app-email-container></app-email-container>
+      <app-password-container></app-password-container>
+      <app-name-container></app-name-container>
+      <button mat-raised-button color="primary" (click)="testing()">Submit</button>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>

@@ -1,22 +1,17 @@
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      Search for course:
-    </mat-panel-title>
-    <mat-panel-description>
-      By: Subject, Course Number
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-
+<mat-card>
+  Search for course:
   <mat-form-field>
     <mat-label>Subject</mat-label>
-    <input matInput placeholder='Ex. "SE"'>
+    <input matInput placeholder='Ex. "SE"' [(ngModel)]="subject">
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Course Number</mat-label>
-    <input matInput placeholder='Ex. "3316", "3316A"' max="5">
+    <input matInput placeholder='Ex. "3316", "3316A"' max="5" [(ngModel)]="catalog_nbr">
   </mat-form-field>
 
-  <button mat-raised-button color="primary">Submit</button>
-</mat-expansion-panel>
+  <button mat-raised-button color="primary" (click)="onSearchCourse()">Search</button>
+  OR
+  <button mat-raised-button color="primary" (click)="onShowAllCourses()">Show All</button>
+  <app-search-courses-results></app-search-courses-results>
+</mat-card>

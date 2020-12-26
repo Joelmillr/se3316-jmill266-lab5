@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-password-container',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PasswordContainerComponent implements OnInit {
   hide = true;
+  password = ""
+  @Output() enterPassword = new EventEmitter();
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onEnterPassword(){
+    this.enterPassword.emit(this.password)
+  }
 }

@@ -25,6 +25,7 @@ import { EmailContainerComponent } from './layout/body/sign-in-component/email-c
 import { PasswordContainerComponent } from './layout/body/sign-in-component/password-container/password-container.component';
 import { SearchCoursesComponentComponent } from './layout/body/search-courses-component/search-courses-component.component';
 import { NameContainerComponent } from './layout/body/sign-in-component/name-container/name-container.component';
+import { SearchCoursesResultsComponent } from './layout/body/search-courses-component/search-courses-results/search-courses-results.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { NameContainerComponent } from './layout/body/sign-in-component/name-con
     PasswordContainerComponent,
     SearchCoursesComponentComponent,
     NameContainerComponent,
+    SearchCoursesResultsComponent,
   ],
   imports: [
     BrowserModule,

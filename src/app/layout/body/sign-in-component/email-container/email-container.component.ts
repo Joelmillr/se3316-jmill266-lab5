@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -7,12 +7,20 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./email-container.component.css']
 })
 export class EmailContainerComponent implements OnInit {
-  email = new FormControl('', [Validators.required,
-    Validators.email]);
+  email = new FormControl('', [Validators.required, Validators.email]);
+  @Output() enterEmail = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onEnterEmail(){
+    // does not emit an event if the email input is blank or not a valid email
+    if(this.email.hasError('email') || this.email.hasError('required')){
+
+    }
+    else this.enterEmail.emit(this.email.value)
   }
 
   getErrorMessage() {

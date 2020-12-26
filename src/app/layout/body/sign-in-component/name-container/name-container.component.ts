@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-name-container',
@@ -6,10 +6,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./name-container.component.css']
 })
 export class NameContainerComponent implements OnInit {
+  fName = "";
+  lName = ""
+  fNameEntered: boolean;
+  @Output() enterfName = new EventEmitter();
+  @Output() enterlName = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+    this.fNameEntered = false
+  }
 
   ngOnInit(): void {
+  }
+
+  onEnterfName(){
+    this.enterfName.emit(this.fName)
+  }
+
+  onEnterlName(){
+    this.enterlName.emit(this.lName)
   }
 
 }

@@ -6,10 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-courses-component.component.css']
 })
 export class SearchCoursesComponentComponent implements OnInit {
+  subject!: any;
+  catalog_nbr!: any;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onSearchCourse(){
+    alert(this.subject + this.catalog_nbr)
+  }
+
+  onShowAllCourses(){
+    
   }
 
 }

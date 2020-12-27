@@ -26,6 +26,14 @@ import { PasswordContainerComponent } from './layout/body/sign-in-component/pass
 import { SearchCoursesComponentComponent } from './layout/body/search-courses-component/search-courses-component.component';
 import { NameContainerComponent } from './layout/body/sign-in-component/name-container/name-container.component';
 import { SearchCoursesResultsComponent } from './layout/body/search-courses-component/search-courses-results/search-courses-results.component';
+import { PublicSchedulesComponent } from './layout/body/public-schedules/public-schedules.component';
+import { ScheduleComponent } from './layout/body/public-schedules/schedule/schedule.component';
+import { CoursesComponent } from './layout/courses/courses.component';
+import { SchedulesComponent } from './layout/schedules/schedules.component';
+import { ScheduleCreateComponent } from './layout/schedules/schedule-create/schedule-create.component';
+import { CourseListComponent } from './layout/courses/course-list/course-list.component';
+import { ScheduleListComponent } from './layout/schedules/schedule-list/schedule-list.component';
+import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
   declarations: [
@@ -44,6 +52,13 @@ import { SearchCoursesResultsComponent } from './layout/body/search-courses-comp
     SearchCoursesComponentComponent,
     NameContainerComponent,
     SearchCoursesResultsComponent,
+    PublicSchedulesComponent,
+    ScheduleComponent,
+    CoursesComponent,
+    SchedulesComponent,
+    ScheduleCreateComponent,
+    CourseListComponent,
+    ScheduleListComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,7 +71,8 @@ import { SearchCoursesResultsComponent } from './layout/body/search-courses-comp
     MatCardModule,
     MatIconModule,
     MatExpansionModule,
-    MatTabsModule
+    MatTabsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

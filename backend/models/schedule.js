@@ -15,7 +15,7 @@ const courseListSchema = mongoose.Schema({
 
 const scheduleSchema = mongoose.Schema({
   "title": joi.string().regex(/^[^*|\":<>[\]{}`\\()';@&$?!]+$/).min(1).required(), //only a-z, A-Z, 0-9. No spaces allowed either.,,
-  "creator": joi.string().regex(/^[^*|\":<>[\]{}`\\()';@&$?!]+$/).min(1).required(), //only a-z, A-Z, 0-9. No spaces allowed either.,,
+  "creatorID": joi.string().regex(/^[^*|\":<>[\]{}`\\()';@&$?!]+$/).min(1).required(), //only a-z, A-Z, 0-9. No spaces allowed either.,,
   "courseList":[courseListSchema],
   "public": {type: Boolean, default: false}
 }, {collection: 'Schedules'});

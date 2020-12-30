@@ -13,7 +13,6 @@ const Schedule = require('./models/schedule');
 
 const Account = require('./models/account');
 const { scheduled } = require('rxjs');
-const course = require('./models/course');
 
 const app = express();
 
@@ -44,41 +43,74 @@ app.use((req, res, next) => {
 // List of all Courses. Returns the list of Courses offered
 app.get('/api/courses', (req, res) => {
   Course.find().then(courseList => {
-    res.status(200).json({
-      message: "Courses fetched successfully!",
-      courses: courseList
-    })
+    res.send( courseList )
   })
 })
 
-// Get all course codes (property name: catalog_nbr) for a given subject code. Return an error if the subject code doesn’t exist.
-app.get(`/api/courses/:subject`, (req, res) => {
+// List of all course subjects and catalog numbers
+app.get('/api/courses/subject_and_catalog_nbrs', (req, res) => {
+  Course.find({}, 'subject catalog_nbr').then(catalog_nbrs => {
+    res.send( catalog_nbrs )
+  })
+})
+
+// Search for course by subject
+app.get(`/api/courses/subjects/:subject`, (req, res) => {
   const subject = req.params.subject;
   Course.find({ subject: { $regex: `${subject}`, $options: 'i' } }).then(courseList => {
-    res.status(200).json({
-      message: `Showing results for subject = ${subject}`,
-      courses: courseList
-    })
+    res.send(courseList)
   })
 })
 
-// Get the timetable entry for a given subject code, a course code and an optional course component. Return an error if the subject code or course code
-// doesn’t exist. If the course component is not specified, return time table entries for all components.
-app.get('/api/courses/:subject/:catalog_nbr', (req, res) => {
+// Search for course by keyword (keyword must be at least 4 characters long)
+app.get(`/api/courses/keywords/:keyword`, (req, res) => {
+  const keyword = req.params.keyword;
+  if(keyword.length < 4){
+    res.send(`Keyword must be at least 4 characters long`)
+  }
+  Course.find({
+    $or:[
+      { catalog_nbr: { '$regex': `${keyword}`, $options: 'i' }},
+      { catalog_nbr: Number(keyword) },
+      { className: { '$regex': `${keyword}`, $options: 'i' }}]
+  }).then(courseList => {
+    res.send(courseList)
+  })
+})
+
+// Search for course by subject and keyword
+app.get('/api/courses/subject_and_keyword/:subject/:keyword', (req, res) => {
   // No course component in the parameters
   const subject = req.params.subject;
-  const catalog_nbr = req.params.catalog_nbr;
-  Course.find({ subject: { $regex: `${subject}`, $options: 'i' }, catalog_nbr: { $regex: `${catalog_nbr}`, $options: 'i' } }).then(courseList => {
-    res.status(200).json({
-      message: `Showing results for subject = ${subject}, catalog_nbr = ${catalog_nbr}`,
-      courses: courseList
-    })
+  const keyword = req.params.keyword;
+  if(keyword.length < 4){
+    res.send(`Keyword must be at least 4 characters long`)
+  }
+  Course.find({
+    subject: { $regex: `${subject}`, $options: 'i' },
+    $or:[
+      { catalog_nbr: { $regex: `${keyword}`, $options: 'i' }},
+      { catalog_nbr: Number(keyword) },
+      { className: { $regex: `${keyword}`, $options: 'i' }}
+    ] }).then(courseList => {
+    res.send(courseList)
   })
 });
 
+// App schedule backend functions
+//
+//
+//
+// Returns all schedules for a specific user
+app.get('/api/schedules/user/:userID', (req, res) => {
+  const userID = req.params.userID
+  Schedule.find({ creatorID: userID}).then(schedules => {
+    res.send(schedules)
+  })
+})
 // Create a new schedule (to save a list of courses) with a given schedule name. Return an error if name exists.
 app.post('/api/schedules/createSchedule/:scheduleName', (req, res) => {
-  Schedule.exists({ title: req.params.scheduleName, creator: req.body.creator }, (err, result) => {
+  Schedule.exists({ title: req.params.scheduleName, creatorID: req.body.creatorID }, (err, result) => {
     if (result) {
       res.status(400).json({
         message: "Schedule already Exists!",
@@ -86,15 +118,12 @@ app.post('/api/schedules/createSchedule/:scheduleName', (req, res) => {
     } else {
       const schedule = new Schedule({
         title: req.params.scheduleName,
-        creator: req.body.creator,
+        creatorID: req.body.creatorID,
         public: req.body.public,
         courseList: [],
       })
       schedule.save();
-      res.status(201).json({
-        message: "Schedule added successfully ",
-        schedule: schedule
-      })
+      res.send(schedule)
     }
   })
 });

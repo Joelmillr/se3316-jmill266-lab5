@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      Search for course:
+      Search for course: (By Subject or Keyword or both)
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
@@ -12,13 +12,16 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Course Number</mat-label>
-      <input matInput placeholder='Ex. "3316", "3316A"' max="5" [(ngModel)]="catalog_nbr">
+      <mat-label>Keyword</mat-label>
+      <input matInput placeholder='Ex. "3316", "software"' max="5" [(ngModel)]="keyword">
     </mat-form-field>
 
     <button mat-raised-button color="primary" (click)="onSearchCourse()">Search</button>
     OR
     <button mat-raised-button color="primary" (click)="onShowAllCourses()">Show All</button>
-    <app-search-courses-results></app-search-courses-results>
+    <div id='hideCourses' *ngIf="courseList.length > 0">
+      <button  mat-raised-button color="warn" (click)="onHideCourses()">Hide Courses</button>
+    </div>
+    <app-search-courses-results [courses]="courseList"></app-search-courses-results>
   </mat-card-content>
   </mat-card>

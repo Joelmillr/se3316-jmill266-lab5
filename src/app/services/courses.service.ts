@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Course } from '../layout/courses/course.model'
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 
 @Injectable({
@@ -10,25 +10,54 @@ import { Observable, Subject } from 'rxjs';
 export class CoursesService {
   coursesURL:string = 'http://localhost:3000/api/courses';
   private courses: Course[] = [];
-  private coursesUpdated = new Subject<Course[]>();
 
-  constructor(private http: HttpClient) { }
+  private courseList = new Subject<Course[]>();
+
+  constructor(private http: HttpClient) {
+
+  }
+
+  getClassNameAndCatalog_nbrList() {
+    return this.http.get<Course[]>(`${this.coursesURL}/subject_and_catalog_nbrs`)
+  }
 
   // return all courses
   getCourses() {
     this.http.get<Course[]>(`${this.coursesURL}`)
-    .subscribe((courseList) => {
-      this.courses = courseList;
-      this.coursesUpdated.next([...this.courses]);
+    .subscribe((allCourses) => {
+      this.courses = allCourses;
+      this.courseList.next([...this.courses]);
     })
   }
 
-  // search for a course
-  //searchSubjects(subject: any):Observable<SubjectSeachCourse[]>{
-    //return this.http.get<SubjectSeachCourse[]>(`${this.coursesURL}/available/${subject}`)
-  //}
+  // search for a course by subject
+  searchCourseBySubject(subject: any) {
+    this.http.get<Course[]>(`${this.coursesURL}/subjects/${subject}`)
+    .subscribe((allCourses) => {
+      this.courses = allCourses;
+      this.courseList.next([...this.courses]);
+    })
+  }
 
-  searchCourseCodes(subject:any, courseCode:any):Observable<Course> {
-    return this.http.get<Course>(`${this.coursesURL}/available/${subject}/${courseCode}`)
+  // search for a course by keyword
+  searchCourseByKeyword(keyword:any) {
+    this.http.get<Course[]>(`${this.coursesURL}/keywords/${keyword}`)
+    .subscribe((allCourses) => {
+      this.courses = allCourses;
+      this.courseList.next([...this.courses]);
+    })
+  }
+
+  // search for a course by subject and course code
+  searchCourseBySubjectAndKeyword(subject:any, keyword:any) {
+    this.http.get<Course[]>(`${this.coursesURL}/subject_and_keyword/${subject}/${keyword}`)
+    .subscribe((allCourses) => {
+      this.courses = allCourses;
+      this.courseList.next([...this.courses]);
+    })
+  }
+
+  getCourseListListener(){
+    return this.courseList.asObservable();
   }
 }

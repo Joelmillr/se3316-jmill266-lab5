@@ -1,11 +1,18 @@
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      "Subject", "Catalog_nbr": Classname
-    </mat-panel-title>
-    <mat-panel-description>
-      "Section", "Component", "Timetabledata"
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-  <p>Remaining Course Data</p>
-</mat-expansion-panel>
+<div id="courses">
+  <mat-accordion multi="true" *ngIf="courses.length > 0">
+    <mat-expansion-panel *ngFor="let course of courses">
+      <mat-expansion-panel-header >
+        <mat-panel-title>
+          {{ course.subject }}, {{ course.catalog_nbr }}: {{ course.className }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ course.course_info[0].class_section }}, {{ course.course_info[0].ssr_component }}, {{ course.course_info[0].days }}, {{ course.course_info[0].start_time }}-{{ course.course_info[0].end_time }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      {{course.course_info[0].descrlong}} {{course.course_info[0].descr}} {{ course.catalog_description }}
+      Campus: {{course.course_info[0].campus}}, Building: {{course.course_info[0].facility_ID}}, Class Number: {{course.course_info[0].class_nbr }} {{ course.course_info[0].enrl_stat }}
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+

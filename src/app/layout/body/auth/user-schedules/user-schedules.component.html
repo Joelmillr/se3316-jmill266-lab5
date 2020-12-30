@@ -1,0 +1,21 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      My Schedules:
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <app-create-schedule [creatorID]="userID"></app-create-schedule>
+    <app-edit-schedules [userID]="userID"></app-edit-schedules>
+  </mat-card-content>
+</mat-card>
+<!--
+  my schedules: (header)
+
+  create schedule componenet
+
+  list of user schedules
+
+  edit schedule button
+
+-->

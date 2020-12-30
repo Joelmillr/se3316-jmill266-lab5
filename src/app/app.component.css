@@ -1,3 +1,10 @@
+#header{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
 #body{
   position: relative;
   top: 80px;
@@ -5,9 +12,9 @@
 }
 
 #references{
-  position: absolute;
-  bottom: 0px;
-  align-content: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%
 }
 
 #page{

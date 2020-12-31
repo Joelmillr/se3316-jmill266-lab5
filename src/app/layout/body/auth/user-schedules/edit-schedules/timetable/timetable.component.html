@@ -1,0 +1,76 @@
+<table>
+  <tr *ngFor="let course of courseList">
+    <td>
+      <p>
+        {{ course.subject }} {{ course.catalog_nbr }}:
+      </p>
+    </td>
+    <td>
+      <p>
+        {{ course.course_info[0].days }},
+      </p>
+    </td>
+    <td>
+      <p>
+        {{ course.course_info[0].start_time }} - {{ course.course_info[0].end_time }}
+      </p>
+    </td>
+    <td>
+      <button mat-raised-button color="warn" (click)="onRemoveCourse(course.subject, course.catalog_nbr)">Remove Course</button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button mat-raised-button (click)="onAddCourse()" *ngIf="!addCourse">Add Course</button>
+    </td>
+    <div id="add_course_to_schedule" *ngIf="addCourse">
+      <td>
+        <p>Course Subject</p>
+      </td>
+      <td>
+        <input matInput required placeholder='"SE"' [(ngModel)]="subject">
+      </td>
+      <td>
+        <p>Course Number</p>
+      </td>
+      <td>
+        <input matInput placeholder='"3316A"' [(ngModel)]="catalog_nbr">
+      </td>
+      <td>
+        <button mat-raised-button color="primary" (click)="onFinishAddingCourse()">Submit</button>
+      </td>
+      <td>
+        <button mat-raised-button color="warn" (click)="onHideAddCourse()">Hide</button>
+      </td>
+    </div>
+    <td>
+      <button mat-raised-button (click)="onChangeScheduleName()" *ngIf="!changeName">Change Schedule Name</button>
+    </td>
+    <div *ngIf="changeName">
+      <td>
+        <input matInput required placeholder='New Schedule Name' [(ngModel)]="newScheduleName">
+      </td>
+      <td>
+        <button mat-raised-button color="primary" (click)="onNewName()">Submit</button>
+      </td>
+      <td>
+        <button mat-raised-button color="warn" (click)="onHideChangeName()">Hide</button>
+      </td>
+    </div>
+
+    <td>
+      <button mat-raised-button (click)="onChangeScheduleDescription()" *ngIf="!changeDescription">Change Schedule Description</button>
+    </td>
+    <div *ngIf="changeDescription">
+      <td>
+        <input matInput required placeholder='New Schedule Description' [(ngModel)]="newScheduleDescription">
+      </td>
+      <td>
+        <button mat-raised-button color="primary" (click)="onNewDescription()">Submit</button>
+      </td>
+      <td>
+        <button mat-raised-button color="warn" (click)="onHideChangeDescription()">Hide</button>
+      </td>
+    </div>
+  </tr>
+</table>

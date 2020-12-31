@@ -1,7 +1,9 @@
-import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnDestroy, Input } from '@angular/core';
 import { Course } from 'src/app/layout/courses/course.model';
 import { CoursesService } from '../../../services/courses.service'
-import { Subscription } from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
+import {map, startWith} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -10,32 +12,23 @@ import { Subscription } from 'rxjs'
   styleUrls: ['./search-courses-component.component.css']
 })
 export class SearchCoursesComponentComponent implements OnInit,OnDestroy {
+  @Input() courseMongoIdList: any[] = [];
+  @Input() subjectList: any[] = [];
+  @Input() catalog_nbrList: any[] = [];
+
   subject!: any;
   keyword!: any;
-  courseMongoIdList: any[] = [];
-  catalog_nbrList: any[] = [];
-  classNameList: any[] = [];
   courseList: Course[] = [];
   private courseSub!: Subscription;
-
   constructor(public courseService:CoursesService) {
-    courseService.getClassNameAndCatalog_nbrList().subscribe(courseList => {
-      courseList.forEach(course => {
-        this.courseMongoIdList.push(course._id)
-        this.classNameList.push(course.className)
-        this.catalog_nbrList.push(course.catalog_nbr)
-      })
-    })
-    console.log(this.courseMongoIdList)
-    console.log(this.classNameList)
-    console.log(this.catalog_nbrList)
+
   }
 
   ngOnInit(): void {
-    //this.courseList = this.courseService.getCourses();
     this.courseSub = this.courseService.getCourseListListener().subscribe((courses:Course[]) => {
       this.courseList = courses
     });
+    
   }
 
   ngOnDestroy() {

@@ -11,6 +11,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 import { AppComponent } from './app.component';
@@ -32,7 +33,8 @@ import { ScheduleComponent } from './layout/body/public-schedules/schedule/sched
 import { HttpClientModule } from '@angular/common/http';
 import { UserSchedulesComponent } from './layout/body/auth/user-schedules/user-schedules.component';
 import { CreateScheduleComponent } from './layout/body/auth/user-schedules/create-schedule/create-schedule.component';
-import { EditSchedulesComponent } from './layout/body/auth/user-schedules/edit-schedules/edit-schedules.component'
+import { EditSchedulesComponent } from './layout/body/auth/user-schedules/edit-schedules/edit-schedules.component';
+import { TimetableComponent } from './layout/body/auth/user-schedules/edit-schedules/timetable/timetable.component'
 
 @NgModule({
   declarations: [
@@ -54,6 +56,7 @@ import { EditSchedulesComponent } from './layout/body/auth/user-schedules/edit-s
     UserSchedulesComponent,
     CreateScheduleComponent,
     EditSchedulesComponent,
+    TimetableComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,8 @@ import { EditSchedulesComponent } from './layout/body/auth/user-schedules/edit-s
     MatTabsModule,
     HttpClientModule,
     MatAutocompleteModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

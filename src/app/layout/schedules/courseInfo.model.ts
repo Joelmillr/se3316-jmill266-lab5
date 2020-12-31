@@ -1,5 +1,5 @@
 export interface CourseInfo{
-  "days": [String];
+  "days": String[];
   "start_time": String;
   "end_time": String
 }

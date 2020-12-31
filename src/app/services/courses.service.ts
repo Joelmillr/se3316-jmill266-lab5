@@ -17,7 +17,7 @@ export class CoursesService {
 
   }
 
-  getClassNameAndCatalog_nbrList() {
+  getSubjectAndCatalog_nbrList() {
     return this.http.get<Course[]>(`${this.coursesURL}/subject_and_catalog_nbrs`)
   }
 

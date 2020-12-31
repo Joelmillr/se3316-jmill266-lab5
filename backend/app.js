@@ -43,14 +43,14 @@ app.use((req, res, next) => {
 // List of all Courses. Returns the list of Courses offered
 app.get('/api/courses', (req, res) => {
   Course.find().then(courseList => {
-    res.send( courseList )
+    res.send(courseList)
   })
 })
 
 // List of all course subjects and catalog numbers
 app.get('/api/courses/subject_and_catalog_nbrs', (req, res) => {
-  Course.find({}, 'subject catalog_nbr').then(catalog_nbrs => {
-    res.send( catalog_nbrs )
+  Course.find({}, 'subject catalog_nbr').then(courses => {
+    res.send(courses)
   })
 })
 
@@ -65,14 +65,14 @@ app.get(`/api/courses/subjects/:subject`, (req, res) => {
 // Search for course by keyword (keyword must be at least 4 characters long)
 app.get(`/api/courses/keywords/:keyword`, (req, res) => {
   const keyword = req.params.keyword;
-  if(keyword.length < 4){
+  if (keyword.length < 4) {
     res.send(`Keyword must be at least 4 characters long`)
   }
   Course.find({
-    $or:[
-      { catalog_nbr: { '$regex': `${keyword}`, $options: 'i' }},
+    $or: [
+      { catalog_nbr: { '$regex': `${keyword}`, $options: 'i' } },
       { catalog_nbr: Number(keyword) },
-      { className: { '$regex': `${keyword}`, $options: 'i' }}]
+      { className: { '$regex': `${keyword}`, $options: 'i' } }]
   }).then(courseList => {
     res.send(courseList)
   })
@@ -83,16 +83,17 @@ app.get('/api/courses/subject_and_keyword/:subject/:keyword', (req, res) => {
   // No course component in the parameters
   const subject = req.params.subject;
   const keyword = req.params.keyword;
-  if(keyword.length < 4){
+  if (keyword.length < 4) {
     res.send(`Keyword must be at least 4 characters long`)
   }
   Course.find({
     subject: { $regex: `${subject}`, $options: 'i' },
-    $or:[
-      { catalog_nbr: { $regex: `${keyword}`, $options: 'i' }},
+    $or: [
+      { catalog_nbr: { $regex: `${keyword}`, $options: 'i' } },
       { catalog_nbr: Number(keyword) },
-      { className: { $regex: `${keyword}`, $options: 'i' }}
-    ] }).then(courseList => {
+      { className: { $regex: `${keyword}`, $options: 'i' } }
+    ]
+  }).then(courseList => {
     res.send(courseList)
   })
 });
@@ -104,7 +105,7 @@ app.get('/api/courses/subject_and_keyword/:subject/:keyword', (req, res) => {
 // Returns all schedules for a specific user
 app.get('/api/schedules/user/:userID', (req, res) => {
   const userID = req.params.userID
-  Schedule.find({ creatorID: userID}).then(schedules => {
+  Schedule.find({ creatorID: userID }).then(schedules => {
     res.send(schedules)
   })
 })
@@ -120,6 +121,7 @@ app.post('/api/schedules/createSchedule/:scheduleName', (req, res) => {
         title: req.params.scheduleName,
         creatorID: req.body.creatorID,
         public: req.body.public,
+        description: req.body.description,
         courseList: [],
       })
       schedule.save();
@@ -129,14 +131,10 @@ app.post('/api/schedules/createSchedule/:scheduleName', (req, res) => {
 });
 
 // Save a list of subject code, course code pairs under a given schedule name. Return an error if the schedule name does not exist. Replace existing
-// subject-code + course-code pairs with new values and create new pairs if it doesn’t exist. [10 points]
-app.put('/api/schedules/editSchedule/:scheduleId', (req, res, next) => {
+// subject-code + course-code pairs with new values and create new pairs if it doesn’t exist.
+app.put('/api/schedules/editSchedule/:scheduleId', (req, res) => {
   const id = req.params.scheduleId
   const addCourse = req.body.course[0]
-
-  const updateCouseList = {
-    $push: { "courseList": addCourse }
-  }
 
   Schedule.findByIdAndUpdate(id, {
     $addToSet: { courseList: addCourse }
@@ -154,13 +152,58 @@ app.put('/api/schedules/editSchedule/:scheduleId', (req, res, next) => {
   });
 })
 
+// Change schedule name
+app.put('/api/schedules/editSchedule/rename/:scheduleId', (req, res) => {
+  const id = req.params.scheduleId;
+  const newName = req.body.newName;
+
+  Schedule.findByIdAndUpdate(id, { title: newName },
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        return console.log('error');
+      } else {
+        console.log(result)
+        console.log('Updated schedule');
+        res.status(200).json({
+          message: 'Schedule updated'
+        })
+      }
+    });
+})
+
+// Change schedule description
+app.put('/api/schedules/editSchedule/description/:scheduleId', (req, res) => {
+  const id = req.params.scheduleId;
+  const newDescription = req.body.newDescription;
+
+  Schedule.findByIdAndUpdate(id, { description: newDescription },
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        return console.log('error');
+      } else {
+        console.log(result)
+        console.log('Updated schedule');
+        res.status(200).json({
+          message: 'Schedule updated'
+        })
+      }
+    });
+})
+
+// Remove course from a schedule
+app.delete('/api/schedules/editSchedule/delete/course', (req, res) => {
+  const subject = req.body.subject;
+  const catalog_nbr = req.body.catalog_nbr;
+
+
+})
+
 // returns a list of all public schedules
 app.get('/api/schedules', (req, res) => {
   Schedule.find({ public: true }).then(scheduleList => {
-    res.status(200).json({
-      message: 'Showing all public schedules',
-      schedules: scheduleList
-    })
+    res.send(scheduleList)
   })
 })
 

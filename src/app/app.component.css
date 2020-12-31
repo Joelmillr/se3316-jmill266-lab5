@@ -5,10 +5,12 @@
   z-index: 9999;
 }
 
-#body{
+main{
   position: relative;
   top: 80px;
   padding: 0 15px;
+  width: 95%;
+  margin: auto;
 }
 
 #references{

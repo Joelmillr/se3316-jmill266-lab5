@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-user-schedules',
@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserSchedulesComponent implements OnInit {
   userID: String = "123";
+  @Input() courseMongoIdList: any[] = [];
+  @Input() subjectList: any[] = [];
+  @Input() catalog_nbrList: any[] = [];
 
   constructor() { }
 

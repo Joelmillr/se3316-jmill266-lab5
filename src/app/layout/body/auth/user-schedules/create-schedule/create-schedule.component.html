@@ -2,14 +2,20 @@
   <table>
     <tr>
       <td>
-        <button mat-raised-button color="primary" (click)="onOpenCreator()">Create Schedule</button>
+        <button mat-raised-button color="primary" (click)="onOpenCreator()" *ngIf="!createSchedule">Create Schedule</button>
       </td>
       <div id="schedule_creator" *ngIf="createSchedule">
         <td>
           <p>Schedule Name:</p>
         </td>
         <td>
-          <input matInput placeholder='"Joels Schedule"' [(ngModel)]="scheduleName">
+          <input matInput required placeholder='"Joels Schedule"' [(ngModel)]="scheduleName">
+        </td>
+        <td>
+          <p>Description</p>
+        </td>
+        <td>
+          <input matInput placeholder='"3rd year soft eng"' [(ngModel)]="scheduleDescription">
         </td>
         <td>
           <p>

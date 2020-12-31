@@ -6,11 +6,11 @@
     <app-sign-in-component></app-sign-in-component>
   </div>
   <div id="search_courses_component">
-    <app-search-courses-component></app-search-courses-component>
+    <app-search-courses-component [courseMongoIdList]="courseMongoIdList" [subjectList]="subjectList" [catalog_nbrList]="catalog_nbrList"></app-search-courses-component>
   </div>
   <br>
   <div id="user_schedules">
-    <app-user-schedules></app-user-schedules>
+    <app-user-schedules [courseMongoIdList]="courseMongoIdList" [subjectList]="subjectList" [catalog_nbrList]="catalog_nbrList"></app-user-schedules>
   </div>
   <br>
   <div id="public_schedules">

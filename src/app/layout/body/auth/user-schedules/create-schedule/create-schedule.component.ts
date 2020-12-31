@@ -10,6 +10,7 @@ import { SchedulesService } from 'src/app/services/schedules.service';
 export class CreateScheduleComponent implements OnInit {
   createSchedule: boolean = false;
   scheduleName: String = "";
+  scheduleDescription: String = ""
   public: boolean = false
   @Input()creatorID!: String;
 
@@ -26,8 +27,10 @@ export class CreateScheduleComponent implements OnInit {
     if(this.scheduleName == undefined || this.scheduleName == "") {
       alert(`Please enter a schedule name!`)
     }else{
+      if(this.scheduleDescription == undefined) this.scheduleDescription = "";
       const schedule = {
-        "creator": this.creatorID,
+        "creatorID": this.creatorID,
+        "description": this.scheduleDescription,
         "public": this.public
       }
       this.scheduleService.createSchedule(this.scheduleName, schedule).subscribe(schedule => {

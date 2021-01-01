@@ -41,6 +41,25 @@ export class SchedulesService {
     return this.http.post<Schedule>(`${this.scheduleURL}/createSchedule/${scheduleName}`, schedule)
   }
 
+
+
+  //add course or remove course from schedule
+  updateSchedule(addCourse: boolean, scheduleID: String, creatorID: String, courseID:String){
+    // If addCourse is true -> add a course to the schedule
+    if(addCourse){
+      const requestBody = {
+        "creatorID": `${creatorID}`,
+        "courseID": `${courseID}`
+      }
+      return this.http.put<Schedule>(`${this.scheduleURL}/editSchedule/${scheduleID}`, requestBody)
+    }
+    
+    // If addCourse is false -> remove a course from the schedule
+    else {
+      return this.http.delete<Schedule>(`${this.scheduleURL}/editSchedule/${courseID}/from/${scheduleID}`, )
+    }
+  }
+
   getUserScheduleListListener(){
     return this.userScheduleList.asObservable();
   }

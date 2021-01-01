@@ -3,8 +3,8 @@ const joi = require('joi');
 
 const course_infoSchema = mongoose.Schema({
   "days": [String],
-    "start_time": String,
-    "end_time": String,
+  "start_time": String,
+  "end_time": String,
 }, {_id: false});
 
 const courseListSchema = mongoose.Schema({
@@ -19,6 +19,6 @@ const scheduleSchema = mongoose.Schema({
   "description": joi.string().regex(/^[^*|\":<>[\]{}`\\()';@&$?!]+$/).min(1),
   "courseList":[courseListSchema],
   "public": {type: Boolean, default: false}
-}, {collection: 'Schedules'});
+}, {collection: 'Schedules', timestamps: true});
 
 module.exports = mongoose.model('Schedule', scheduleSchema);

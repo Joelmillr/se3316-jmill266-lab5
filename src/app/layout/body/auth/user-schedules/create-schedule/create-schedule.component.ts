@@ -29,13 +29,13 @@ export class CreateScheduleComponent implements OnInit {
     }else{
       if(this.scheduleDescription == undefined) this.scheduleDescription = "";
       const schedule = {
+        "title": this.scheduleName,
         "creatorID": this.creatorID,
         "description": this.scheduleDescription,
         "public": this.public
       }
       this.scheduleService.createSchedule(this.scheduleName, schedule).subscribe(schedule => {
-        //schedulecreatedsuccessfully
-        //updateschedulelist
+        alert(`${schedule.title} was created`)
       }, error => {
         alert(`Error Creating Schedule! Please ensure that you do not reuse a schedule name`)
       })

@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CoursesService } from 'src/app/services/courses.service';
+import { SchedulesService } from 'src/app/services/schedules.service';
 
 @Component({
   selector: 'app-timetable',
@@ -23,7 +25,7 @@ export class TimetableComponent implements OnInit {
   changeDescription:boolean = false;
   newScheduleDescription: String = "";
 
-  constructor() { }
+  constructor(public coursesService:CoursesService, public schedulesService:SchedulesService) { }
 
   ngOnInit(): void {
   }
@@ -52,17 +54,29 @@ export class TimetableComponent implements OnInit {
   }
 
   onFinishAddingCourse() {
-    // Add new course
+    if(this.subject == "" || this.subject == undefined){
+      alert(`Please enter a subject`)
+    }
+     if(this.catalog_nbr == "" || this.catalog_nbr == undefined){
+      alert(`Please enter a course code`)
+    }
     if(this.isRealSubject(this.subject) && this.isRealCatalog_nbr(this.catalog_nbr)){
       // Add new course
-      this.creatorID
-      this.scheduleID
-      this.subject
-      this.catalog_nbr
-      
-    }
-    else{
-      alert(`${this.subject} and ${this.catalog_nbr} are not a real course, please ensure you have entered all fields correctl`)
+      let courseID!: String;
+      // Finding the _id of the desired course
+      this.coursesService.getCourseID(this.subject, this.catalog_nbr).subscribe((course) => {
+        // Assigning this _id to a variable
+        courseID = course[0]._id
+        // Calling the update schedule function with this variable
+        this.schedulesService.updateSchedule(true, this.scheduleID, this.creatorID, courseID).subscribe(schedule => {
+          alert(`${schedule.title} was created`)
+        }, error => {
+          alert(`Error Creating Schedule! Please ensure that you do not reuse a schedule name`)
+        })
+      })
+
+    } else{
+      alert(`${this.subject} ${this.catalog_nbr} is not a real course, please ensure you have entered all fields correct`)
     }
   }
 
@@ -76,6 +90,9 @@ export class TimetableComponent implements OnInit {
 
   onNewName() {
     // Change Schedule Name
+    this.creatorID
+    this.scheduleID
+    this.newScheduleName
   }
 
   onHideChangeName() {
@@ -88,6 +105,9 @@ export class TimetableComponent implements OnInit {
 
   onNewDescription() {
     // Change Schedule Description
+    this.creatorID
+    this.scheduleID
+    this.newScheduleDescription
   }
 
   onHideChangeDescription() {

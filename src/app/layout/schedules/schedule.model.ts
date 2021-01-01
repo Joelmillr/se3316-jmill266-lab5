@@ -4,6 +4,7 @@ export interface Schedule {
   "_id": any;
   "public": Boolean;
   "title": String;
-  "creator": String
+  "description": String;
+  "creatorID": String;
   "courseList": [CourseList]
 }

@@ -57,6 +57,12 @@ export class CoursesService {
     })
   }
 
+  // Returns the course ID for a given subject + catalog_nbr
+  getCourseID(subject:String, catalog_nbr:String){
+    let courseID: String = ""
+    return this.http.get<Course[]>(`${this.coursesURL}/code/${subject}/${catalog_nbr}`)
+  }
+
   getCourseListListener(){
     return this.courseList.asObservable();
   }

@@ -13,6 +13,8 @@ const Schedule = require('./models/schedule');
 
 const Account = require('./models/account');
 const { scheduled } = require('rxjs');
+const { Interface } = require('readline');
+const course = require('./models/course');
 
 const app = express();
 
@@ -98,6 +100,21 @@ app.get('/api/courses/subject_and_keyword/:subject/:keyword', (req, res) => {
   })
 });
 
+// Return the id of a course when given a subject and course code
+app.get('/api/courses/code/:subject/:catalog_nbr', (req, res) => {
+  const subject = req.params.subject
+  const catalog_nbr = req.params.catalog_nbr
+  Course.find({
+    subject: `${subject}`,
+    $or: [
+      { catalog_nbr: `${catalog_nbr}` },
+      { catalog_nbr: Number(catalog_nbr) }
+    ]
+  }).then(course => {
+    res.send(course)
+  })
+})
+
 // App schedule backend functions
 //
 //
@@ -109,6 +126,7 @@ app.get('/api/schedules/user/:userID', (req, res) => {
     res.send(schedules)
   })
 })
+
 // Create a new schedule (to save a list of courses) with a given schedule name. Return an error if name exists.
 app.post('/api/schedules/createSchedule/:scheduleName', (req, res) => {
   Schedule.exists({ title: req.params.scheduleName, creatorID: req.body.creatorID }, (err, result) => {
@@ -129,28 +147,6 @@ app.post('/api/schedules/createSchedule/:scheduleName', (req, res) => {
     }
   })
 });
-
-// Save a list of subject code, course code pairs under a given schedule name. Return an error if the schedule name does not exist. Replace existing
-// subject-code + course-code pairs with new values and create new pairs if it doesn’t exist.
-app.put('/api/schedules/editSchedule/:scheduleId', (req, res) => {
-  const id = req.params.scheduleId
-  const addCourse = req.body.course[0]
-
-  Schedule.findByIdAndUpdate(id, {
-    $addToSet: { courseList: addCourse }
-  }, function (err, result) {
-    if (err) {
-      console.log(err);
-      return console.log('error');
-    } else {
-      console.log(result)
-      console.log('Updated schedule');
-      res.status(200).json({
-        message: 'Schedule updated'
-      })
-    }
-  });
-})
 
 // Change schedule name
 app.put('/api/schedules/editSchedule/rename/:scheduleId', (req, res) => {
@@ -192,12 +188,90 @@ app.put('/api/schedules/editSchedule/description/:scheduleId', (req, res) => {
     });
 })
 
-// Remove course from a schedule
-app.delete('/api/schedules/editSchedule/delete/course', (req, res) => {
-  const subject = req.body.subject;
-  const catalog_nbr = req.body.catalog_nbr;
+// Add a course to the schedule
+app.put('/api/schedules/editSchedule/:scheduleId', (req, res) => {
+  const scheduleID = req.params.scheduleId
+  const creatorID = req.body.creatorID
+  const courseID = req.body.courseID
+
+  let addCourse = {
+    "subject": "",
+    "catalog_nbr": "",
+    "course_info": [{
+      "days": [],
+      "start_time": "",
+      "end_time": ""
+    }]
+  }
+  Course.findById(`${courseID}`).then(course => {
+    addCourse.subject = course.subject;
+    addCourse.catalog_nbr = course.catalog_nbr
+    addCourse.course_info[0].days = course.course_info[0].days
+    addCourse.course_info[0].start_time = course.course_info[0].start_time
+    addCourse.course_info[0].end_time = course.course_info[0].end_time
+
+    Schedule.findByIdAndUpdate(scheduleID, {
+      $addToSet: {courseList: addCourse}
+    }, function (err, result){
+      if (err){
+        console.log(err)
+        return console.log(err)
+      } else {
+        //console.log(result)
+        //console.log('Updated Schedule')
+        res.send(result)
+      }
+    }
+    )
+  })
+})
+
+// Remove a course from the schedule
+app.delete('/api/schedules/editSchedule/:courseID/from/:scheduleId', (req, res) => {
+  const scheduleID = req.params.scheduleId
+  //const creatorID = req.body.creatorID
+  const courseID = req.params.courseID
+
+  let addCourse = {
+    "subject": "",
+    "catalog_nbr": "",
+    "course_info": [{
+      "days": [],
+      "start_time": "",
+      "end_time": ""
+    }]
+  }
+  Course.findById(`${courseID}`).then(course => {
+    addCourse.subject = course.subject;
+    addCourse.catalog_nbr = course.catalog_nbr
+    addCourse.course_info[0].days = course.course_info[0].days
+    addCourse.course_info[0].start_time = course.course_info[0].start_time
+    addCourse.course_info[0].end_time = course.course_info[0].end_time
+
+    Schedule.findByIdAndUpdate(scheduleID, {
+      $pull: {courseList: addCourse}
+    }, function (err, result){
+      if (err){
+        console.log(err)
+        return console.log(err)
+      } else {
+        //console.log(result)
+        //console.log('Updated Schedule')
+        res.send(result)
+      }
+    }
+    )
+  })
+})
+
+// Delete a schedule
+app.delete('/api/schedules/editSchedule/delete/:scheduleId', (req, res) => {
+  const scheduleID = req.params.scheduleId
 
 
+  Schedule.findByIdAndDelete(scheduleID, function(err, result){
+    res.send("schedule deleted")
+  })
 })
 
 // returns a list of all public schedules

@@ -11,11 +11,6 @@ const Course = require('./models/course');
 
 const Schedule = require('./models/schedule');
 
-const Account = require('./models/account');
-const { scheduled } = require('rxjs');
-const { Interface } = require('readline');
-const course = require('./models/course');
-
 const app = express();
 
 mongoose.connect("mongodb+srv://user0:vuVYcNGUzTRhtag7@cluster0.urhpg.mongodb.net/userDB?retryWrites=true&w=majority", { useUnifiedTopology: true, useNewUrlParser: true })
@@ -24,6 +19,8 @@ const connection = mongoose.connection;
 
 connection.once("open", function () {
   console.log("Connected to database!");
+}).catch(()=>{
+  console.log("Connection to database failed!")
 });
 
 app.use(bodyParser.json());
@@ -149,11 +146,52 @@ app.post('/api/schedules/createSchedule/:scheduleName', (req, res) => {
 });
 
 // Change schedule name
-app.put('/api/schedules/editSchedule/rename/:scheduleId', (req, res) => {
-  const id = req.params.scheduleId;
+app.put('/api/schedules/editSchedule/rename/:scheduleID', (req, res) => {
+  const scheduleID = req.params.scheduleID;
   const newName = req.body.newName;
+  const creatorID = req.body.creatorID;
 
-  Schedule.findByIdAndUpdate(id, { title: newName },
+  let scheduleName = ""
+
+  Schedule.findById(scheduleID, function (err, result) {
+    if (err) {
+      return console.log('Error, Schedule does not exist');
+    } else {
+      scheduleName = result.title
+      //if(scheduleName == newName) res.send({message: "Error, Schedule already has this name"})
+    }
+    })
+
+
+  Schedule.findByIdAndUpdate(scheduleID, { title: newName },
+    function (err, result) {
+      if (err) {
+        return console.log('error');
+      } else {
+        res.send({message: "Schedule Updated"})
+      }
+    });
+})
+
+// Change schedule description
+app.put('/api/schedules/editSchedule/description/:scheduleID', (req, res) => {
+  const scheduleID = req.params.scheduleID;
+  const newDescription = req.body.newDescription;
+  const creatorID = req.body.creatorID;
+
+  let scheduleDescription = ""
+
+  Schedule.findById(scheduleID, function (err, result) {
+    if (err) {
+      return console.log('Error, Schedule does not exist');
+    } else {
+      scheduleDescription = result.description
+      //if(scheduleDescription == newDescription) res.send({message: "Error, Schedule already has this description "})
+    }
+    })
+
+
+  Schedule.findByIdAndUpdate(scheduleID, { description: newDescription },
     function (err, result) {
       if (err) {
         console.log(err);
@@ -161,31 +199,41 @@ app.put('/api/schedules/editSchedule/rename/:scheduleId', (req, res) => {
       } else {
         console.log(result)
         console.log('Updated schedule');
-        res.status(200).json({
+        res.send({
           message: 'Schedule updated'
         })
       }
     });
 })
 
-// Change schedule description
-app.put('/api/schedules/editSchedule/description/:scheduleId', (req, res) => {
-  const id = req.params.scheduleId;
-  const newDescription = req.body.newDescription;
+// Change schedules visibility
+app.put(`/api/schedules/editSchedule/visibility/:scheduleID`, (req, res) => {
+  const scheduleID = req.params.scheduleID;
+  const visibility = req.body.visibility;
+  const creatorID = req.body.creatorID;
 
-  Schedule.findByIdAndUpdate(id, { description: newDescription },
+  let scheduleVisibility = false
+
+  Schedule.findById(scheduleID, function (err, result) {
+    if (err) {
+      return console.log('Error, Schedule does not exist');
+    } else {
+      scheduleVisibility = result.public
+      //if(scheduleVisibility == visibility) res.send({message: "Error, Schedule already has this visibility "})
+    }
+    })
+
+  Schedule.findByIdAndUpdate(scheduleID, { public: visibility },
     function (err, result) {
-      if (err) {
-        console.log(err);
-        return console.log('error');
-      } else {
-        console.log(result)
-        console.log('Updated schedule');
-        res.status(200).json({
-          message: 'Schedule updated'
-        })
-      }
-    });
+    if (err) {
+      console.log(err);
+      return console.log('error');
+    } else {
+      res.send({
+        message: 'Schedule updated'
+      })
+    }
+  });
 })
 
 // Add a course to the schedule
@@ -268,15 +316,14 @@ app.delete('/api/schedules/editSchedule/:courseID/from/:scheduleId', (req, res) 
 app.delete('/api/schedules/editSchedule/delete/:scheduleId', (req, res) => {
   const scheduleID = req.params.scheduleId
 
-
   Schedule.findByIdAndDelete(scheduleID, function(err, result){
-    res.send("schedule deleted")
+    res.send({message:"schedule deleted"})
   })
 })
 
 // returns a list of all public schedules
 app.get('/api/schedules', (req, res) => {
-  Schedule.find({ public: true }).then(scheduleList => {
+  Schedule.find({ public: true }).limit(10).then(scheduleList => {
     res.send(scheduleList)
   })
 })

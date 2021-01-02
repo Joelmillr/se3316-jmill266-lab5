@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Schedule } from 'src/app/layout/schedules/schedule.model';
 
 @Component({
   selector: 'app-schedule',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./schedule.component.css']
 })
 export class ScheduleComponent implements OnInit {
-
+  @Input() courseList: any[] = []
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.courseList)
   }
 
 }

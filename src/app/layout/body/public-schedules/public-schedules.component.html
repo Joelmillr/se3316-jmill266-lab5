@@ -5,6 +5,25 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <app-schedule></app-schedule>
+    <mat-accordion multi="true" *ngIf="publicSchedules.length > 0">
+      <mat-expansion-panel *ngFor="let schedule of publicSchedules">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ schedule.title }}, ({{ schedule.courseList.length }} courses)... Designed by "creator"
+          </mat-panel-title>
+          <mat-panel-description>
+            <p *ngIf="schedule.description != '' || schedule.description != undefined">
+              {{ schedule.description }}
+            </p>
+            <p *ngIf="schedule.description == '' || schedule.description == undefined">
+              No schedule description available
+            </p>
+
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <app-schedule [courseList]="schedule.courseList"></app-schedule>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <p class="info-text mat-body-1" *ngIf="publicSchedules.length <= 0">No public schedules available!</p>
   </mat-card-content>
 </mat-card>

@@ -72,5 +72,36 @@
         <button mat-raised-button color="warn" (click)="onHideChangeDescription()">Hide</button>
       </td>
     </div>
+
+    <td>
+    <button mat-raised-button (click)="onChangeScheduleVisibility()" *ngIf="!changeVisibility">Change Schedule Visibility</button>
+    </td>
+    <div *ngIf="changeVisibility">
+      <td>
+        Public?:<mat-checkbox [(ngModel)]="newScheduleVisibility"> (Checked = "yes")</mat-checkbox>
+      </td>
+      <td>
+        <button mat-raised-button color="primary" (click)="onNewVisibility()">Submit</button>
+      </td>
+      <td>
+        <button mat-raised-button color="warn" (click)="onHideChangeVisibility()">Hide</button>
+      </td>
+    </div>
+
+    <td>
+      <button mat-raised-button color="warn" (click)="onDeleteSchedule()" *ngIf="!deleteSchedule">Delete Schedule</button>
+      </td>
+      <div *ngIf="deleteSchedule">
+        <td>
+          Are you sure?:
+        </td>
+        <td>
+          <button mat-raised-button color="warn" (click)="onDeleteConfirm()">Yes</button>
+        </td>
+        <td>
+          <button mat-raised-button color="primart" (click)="onHideDeleteSchedule()">Cancel</button>
+        </td>
+      </div>
+
   </tr>
 </table>

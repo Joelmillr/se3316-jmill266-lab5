@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Schedule } from 'src/app/layout/schedules/schedule.model';
 import { SchedulesService } from 'src/app/services/schedules.service';
@@ -17,17 +17,25 @@ export class EditSchedulesComponent implements OnInit, OnDestroy {
   editSchedule: boolean = false;
   userSchedules:Schedule[] = []
 
+
   private scheduleSub!: Subscription;
 
-  constructor(public scheduleService: SchedulesService) {}
+  constructor(public scheduleService: SchedulesService) {
+
+  }
 
   ngOnInit(): void {
-    //this.scheduleSub = this.scheduleService.getUserScheduleListListener().subscribe((schedules:Schedule[]) => {
-    //  this.userSchedules = schedules
-    //});
+    this.scheduleService.getUserSchedules(this.userID)
+    this.scheduleSub = this.scheduleService.getUserScheduleListListener().subscribe((schedules:Schedule[]) => {
+      this.userSchedules = schedules
+    });
+  }
+
+  updateScheduleList(){
+    this.scheduleService.getUserSchedules(this.userID)
   }
 
   ngOnDestroy() {
-    //this.scheduleSub.unsubscribe();
+    this.scheduleSub.unsubscribe();
   }
 }

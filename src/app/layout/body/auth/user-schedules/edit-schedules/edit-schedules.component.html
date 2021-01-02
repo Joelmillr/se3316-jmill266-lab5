@@ -2,7 +2,13 @@
   <mat-expansion-panel *ngFor="let schedule of userSchedules">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{ schedule.title }}, ({{ schedule.courseList.length }} courses)
+        {{ schedule.title }}, ({{ schedule.courseList.length }} courses). This Schedule is:
+        <div *ngIf="schedule.public">
+          Public
+        </div>
+        <div *ngIf="!schedule.public">
+          Private
+        </div>
       </mat-panel-title>
       <mat-panel-description>
         <p *ngIf="schedule.description != '' || schedule.description != undefined">
@@ -13,7 +19,7 @@
         </p>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <app-timetable [creatorID]="userID" [scheduleID]="schedule._id" [courseList]="schedule.courseList" [courseMongoIdList]="courseMongoIdList" [subjectList]="subjectList" [catalog_nbrList]="catalog_nbrList"></app-timetable>
+    <app-timetable (scheduleListUpdate)="updateScheduleList()" [creatorID]="userID" [scheduleID]="schedule._id" [courseList]="schedule.courseList" [courseMongoIdList]="courseMongoIdList" [subjectList]="subjectList" [catalog_nbrList]="catalog_nbrList" [isVisible]="schedule.public"></app-timetable>
   </mat-expansion-panel>
 </mat-accordion>
 <p class="info-text mat-body-1" *ngIf="userSchedules.length <= 0">You dont have any schedules!</p>

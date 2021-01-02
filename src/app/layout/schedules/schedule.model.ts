@@ -6,5 +6,8 @@ export interface Schedule {
   "title": String;
   "description": String;
   "creatorID": String;
-  "courseList": [CourseList]
+  "courseList": [CourseList],
+  "createdAt": any,
+  "updatedAt": any,
+  "__v": any
 }

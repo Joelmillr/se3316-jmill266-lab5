@@ -1,13 +1,20 @@
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      "Name", "# Courses"
-    </mat-panel-title>
-    <mat-panel-description>
-      Designed by: "Creator", Last Modified: "Date"
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-  <p>"Course List"</p>
-  <p>"Description of Schedule"</p>
-  <button mat-raised-button color="primary">Show Timetable data</button>
-</mat-expansion-panel>
+<table>
+  <tr *ngFor="let course of courseList">
+    <td>
+      <p>
+        {{ course.subject }} {{ course.catalog_nbr }}:
+      </p>
+    </td>
+    <td>
+      <p>
+        {{ course.course_info[0].days }},
+      </p>
+    </td>
+    <td>
+      <p>
+        {{ course.course_info[0].start_time }} - {{ course.course_info[0].end_time }}
+      </p>
+    </td>
+  </tr>
+</table>
+

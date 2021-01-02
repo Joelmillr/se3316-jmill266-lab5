@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { EditSchedulesComponent } from './edit-schedules/edit-schedules.component';
 
 @Component({
   selector: 'app-user-schedules',
@@ -10,10 +11,15 @@ export class UserSchedulesComponent implements OnInit {
   @Input() courseMongoIdList: any[] = [];
   @Input() subjectList: any[] = [];
   @Input() catalog_nbrList: any[] = [];
+  @ViewChild(EditSchedulesComponent) editSchedules!:EditSchedulesComponent;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  scheduleCreated(){
+    this.editSchedules.updateScheduleList()
   }
 
 }

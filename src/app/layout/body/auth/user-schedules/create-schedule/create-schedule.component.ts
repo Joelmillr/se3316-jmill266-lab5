@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Schedule } from 'src/app/layout/schedules/schedule.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SchedulesService } from 'src/app/services/schedules.service';
 
 @Component({
@@ -13,6 +12,8 @@ export class CreateScheduleComponent implements OnInit {
   scheduleDescription: String = ""
   public: boolean = false
   @Input()creatorID!: String;
+
+  @Output() scheduleCreated = new EventEmitter()
 
   constructor(public scheduleService: SchedulesService) { }
 
@@ -36,9 +37,11 @@ export class CreateScheduleComponent implements OnInit {
       }
       this.scheduleService.createSchedule(this.scheduleName, schedule).subscribe(schedule => {
         alert(`${schedule.title} was created`)
+        this.scheduleCreated.emit()
       }, error => {
         alert(`Error Creating Schedule! Please ensure that you do not reuse a schedule name`)
       })
+      this.scheduleService.getUserSchedules(this.creatorID)
     }
   }
 

@@ -13,5 +13,10 @@
 }
 
 .spacer{
-  flex: 1;
+  flex: 1 1 auto;
+}
+
+a{
+  text-decoration: none;
+  color: rgb(121, 88, 241);
 }

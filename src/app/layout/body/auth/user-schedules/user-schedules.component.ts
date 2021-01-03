@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { CoursesService } from 'src/app/services/courses.service';
 import { EditSchedulesComponent } from './edit-schedules/edit-schedules.component';
 
 @Component({
@@ -8,12 +9,20 @@ import { EditSchedulesComponent } from './edit-schedules/edit-schedules.componen
 })
 export class UserSchedulesComponent implements OnInit {
   userID: String = "123";
-  @Input() courseMongoIdList: any[] = [];
-  @Input() subjectList: any[] = [];
-  @Input() catalog_nbrList: any[] = [];
   @ViewChild(EditSchedulesComponent) editSchedules!:EditSchedulesComponent;
+  courseMongoIdList: any[] = [];
+  subjectList: any[] = [];
+  catalog_nbrList: any[] = [];
 
-  constructor() { }
+  constructor(public courseService:CoursesService) {
+    courseService.getSubjectAndCatalog_nbrList().subscribe(courseList => {
+      courseList.forEach(course => {
+        this.courseMongoIdList.push(course._id)
+        this.subjectList.push(course.subject)
+        this.catalog_nbrList.push(course.catalog_nbr)
+      })
+    })
+  }
 
   ngOnInit(): void {
   }

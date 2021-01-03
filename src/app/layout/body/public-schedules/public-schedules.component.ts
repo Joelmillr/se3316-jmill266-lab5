@@ -17,7 +17,7 @@ export class PublicSchedulesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.scheduleService.getPublicSchedules()
-    this.scheduleSub = this.scheduleService.getUserScheduleListListener().subscribe((schedules:Schedule[]) => {
+    this.scheduleSub = this.scheduleService.getPublicScheduleListListener().subscribe((schedules:Schedule[]) => {
       this.publicSchedules = schedules
     });
   }

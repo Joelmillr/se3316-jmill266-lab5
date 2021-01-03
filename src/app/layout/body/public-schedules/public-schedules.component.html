@@ -12,10 +12,10 @@
             {{ schedule.title }}, ({{ schedule.courseList.length }} courses)... Designed by "creator"
           </mat-panel-title>
           <mat-panel-description>
-            <p *ngIf="schedule.description != '' || schedule.description != undefined">
+            <p *ngIf="schedule.description.length <= 0 || schedule.description != undefined">
               {{ schedule.description }}
             </p>
-            <p *ngIf="schedule.description == '' || schedule.description == undefined">
+            <p *ngIf="schedule.description.length <= 0 || schedule.description == undefined">
               No schedule description available
             </p>
 

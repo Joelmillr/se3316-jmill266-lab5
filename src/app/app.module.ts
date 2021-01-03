@@ -18,7 +18,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { HeaderTitleComponent } from './layout/header/header-title/header-title.component';
 import { HeaderImageComponent } from './layout/header/header-image/header-image.component';
-import { BodyComponent } from './layout/body/body.component';
 import { AboutComponentComponent } from './layout/body/about-component/about-component.component';
 import { ReferencesComponent } from './layout/references/references.component';
 import { SignInComponentComponent } from './layout/body/auth/sign-in-component/sign-in-component.component';
@@ -35,6 +34,7 @@ import { UserSchedulesComponent } from './layout/body/auth/user-schedules/user-s
 import { CreateScheduleComponent } from './layout/body/auth/user-schedules/create-schedule/create-schedule.component';
 import { EditSchedulesComponent } from './layout/body/auth/user-schedules/edit-schedules/edit-schedules.component';
 import { TimetableComponent } from './layout/body/auth/user-schedules/edit-schedules/timetable/timetable.component'
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,6 @@ import { TimetableComponent } from './layout/body/auth/user-schedules/edit-sched
     HeaderComponent,
     HeaderTitleComponent,
     HeaderImageComponent,
-    BodyComponent,
     AboutComponentComponent,
     ReferencesComponent,
     SignInComponentComponent,
@@ -60,6 +59,7 @@ import { TimetableComponent } from './layout/body/auth/user-schedules/edit-sched
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
     MatButtonModule,

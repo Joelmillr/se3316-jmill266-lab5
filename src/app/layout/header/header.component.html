@@ -1,6 +1,15 @@
 <mat-toolbar>
-  <app-header-title></app-header-title>
+  <a routerLink="/">
+    <app-header-title></app-header-title>
+  </a>
   <div class="spacer"></div>
+  <a mat-button routerLink="/search" routerLinkActive="mat-accent">Search Courses</a>
+  <div class="spacer"></div>
+  <a mat-button routerLink="/public-schedules" routerLinkActive="mat-accent">Public Schedules</a>
+  <div class="spacer"></div>
+  <a mat-button routerLink="/my-schedules" routerLinkActive="mat-accent">My Schedules</a>
+  <div class="spacer"></div>
+  <div class="spacer"></div>
+  <a mat-button routerLink="/sign-in-sign-up" routerLinkActive="mat-accent">Sign-In/Sign-Up</a>
   <app-header-image></app-header-image>
 </mat-toolbar>
-

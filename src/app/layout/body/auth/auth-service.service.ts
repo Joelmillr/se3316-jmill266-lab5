@@ -21,6 +21,7 @@ export class AuthServiceService {
   private tokenTimer!: any;
   private userEmail: String = '';
   private authStatusListener = new Subject<boolean>();
+  private adminStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -33,7 +34,7 @@ export class AuthServiceService {
   }
 
   getIsAdmin() {
-    return this.isAdmin
+    return this.isAdmin;
   }
 
   getEmail() {
@@ -44,16 +45,28 @@ export class AuthServiceService {
     return this.authStatusListener.asObservable();
   }
 
-  changePassword(oldPassword: String, newPassword: String){
+  getAdminStatusListener() {
+    return this.adminStatusListener.asObservable();
+  }
+
+  changePassword(oldPassword: String, newPassword: String) {
     const passwordContainer = {
       oldPassword: oldPassword,
-      newPassword: newPassword
-    }
-    this.http.put<{message: string}>(`${this.authURL}/change-password`, passwordContainer).subscribe(message => {
-      alert(message.message)
-    }, error => {
-      alert(error)
-    })
+      newPassword: newPassword,
+    };
+    this.http
+      .put<{ message: string }>(
+        `${this.authURL}/change-password`,
+        passwordContainer
+      )
+      .subscribe(
+        (message) => {
+          alert(message.message);
+        },
+        (error) => {
+          alert(error);
+        }
+      );
   }
 
   createUser(fName: String, lName: String, email: String, password: String) {
@@ -70,6 +83,7 @@ export class AuthServiceService {
       },
       (error) => {
         this.authStatusListener.next(false);
+        this.adminStatusListener.next(false)
       }
     );
   }
@@ -79,9 +93,11 @@ export class AuthServiceService {
       email: email,
       password: password,
     };
+
     this.userEmail = email;
+
     this.http
-      .post<{ token: string, isAdmin?:boolean, expiresIn: number }>(
+      .post<{ token: string; isAdmin: boolean; expiresIn: number }>(
         `${this.authURL}/login`,
         validateData
       )
@@ -89,12 +105,16 @@ export class AuthServiceService {
         (response) => {
           const token = response.token;
           this.token = token;
-          //console.log(response)
-          if(response.isAdmin){
+          if (response.isAdmin) {
             const isAdmin = response.isAdmin;
             this.isAdmin = isAdmin;
-
+            this.adminStatusListener.next(true)
+          }else {
+            const isAdmin = response.isAdmin;
+            this.isAdmin = isAdmin;
+            this.adminStatusListener.next(false)
           }
+          
           if (token) {
             const expiresInDuration = response.expiresIn;
             this.setAuthTimer(expiresInDuration);
@@ -111,8 +131,10 @@ export class AuthServiceService {
         },
         (error) => {
           this.authStatusListener.next(false);
+          this.adminStatusListener.next(false);
         }
       );
+
   }
 
   autoAuthUser() {
@@ -133,6 +155,8 @@ export class AuthServiceService {
     this.token = '';
     this.isAuth = false;
     this.authStatusListener.next(false);
+    this.isAdmin = false;
+    this.adminStatusListener.next(false)
     this.router.navigate(['/']);
     this.clearAuthData();
     clearTimeout(this.tokenTimer);

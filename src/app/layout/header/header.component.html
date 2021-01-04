@@ -2,6 +2,10 @@
   <a routerLink="/">
     <app-header-title></app-header-title>
   </a>
+  <div *ngIf="isAdmin">
+    <a mat-button routerLink="/admin" routerLinkActive="mat-accent">Admin</a>
+  </div>
+
   <div class="spacer"></div>
   <a mat-button routerLink="/search" routerLinkActive="mat-accent">Search Courses</a>
   <div class="spacer"></div>

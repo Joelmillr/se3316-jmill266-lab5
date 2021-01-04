@@ -1,0 +1,76 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Users
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-accordion multi="true" *ngIf="users.length > 0">
+      <mat-expansion-panel *ngFor="let user of users">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ user.fName }} {{ user.lName }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ user.email }},
+            <div *ngIf="user.admin">
+              <p>Admin User</p>
+            </div>
+            <div *ngIf="!user.admin">
+              <p>NonAdmin User</p>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div *ngIf="user.active">
+          <p>Users account is active</p>
+        </div>
+        <div *ngIf="!user.active">
+          <p>Users account is deactivated</p>
+        </div>
+
+        <button mat-raised-button (click)="onChangeUserActive()" *ngIf="!changeActive">Activate/Deactivate User</button>
+        <div *ngIf="changeActive">
+          Deactivate?:<mat-checkbox [(ngModel)]="deactivate"> (Checked = "Deactivate")</mat-checkbox>
+          <button mat-raised-button color="primary" (click)="onNewActive(user._id)">Submit</button>
+          <button mat-raised-button color="warn" (click)="onHideUserActive()">Hide</button>
+        </div>
+
+        <button mat-raised-button (click)="onChangePriviledges()" *ngIf="!changePriviledges">Give User Admin
+          Priviledges?</button>
+        <div *ngIf="changePriviledges">
+          Make User Admin?:<mat-checkbox [(ngModel)]="giveAdmin"> (Checked = "Admin Priveledges")</mat-checkbox>
+          <button mat-raised-button color="primary" (click)="onNewAdmin(user._id)">Submit</button>
+          <button mat-raised-button color="warn" (click)="onHideUserAdmin()">Hide</button>
+
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+    <p class="info-text mat-body-1" *ngIf="users.length <= 0">No user are available!</p>
+
+    <h1>Copyright Enforcement Documents:</h1>
+    <button mat-raised-button color="primary" (click)="onUpdateDocument()" *ngIf="!updateDocument">Update
+      Document</button>
+
+    <div *ngFor="let document of copyrightEnforements">
+      <h1>{{document.title}}</h1>
+      <p>{{document.description}}</p>
+
+      <div *ngIf="updateDocument">
+        <textarea [(ngModel)]="newDescription"></textarea>
+        <button mat-raised-button color="primary" (click)="onNewDocumentDescription(document._id)">Submit</button>
+        <button mat-raised-button color="warn" (click)="onHideUpdateDocument()">Hide</button>
+      </div>
+    </div>
+
+    <h1>Create New Document (Security and privacy, DMCA notice and takedown, and acceptable use policy)</h1>
+    <button mat-raised-button color="primary" (click)="onCreateDocument()" *ngIf="!createDocument">Create
+      Document</button>
+    <div *ngIf="createDocument">
+      <textarea [(ngModel)]="docTitle" placeholder="Document Title"></textarea>
+      <textarea [(ngModel)]="docDesc" placeholder="Document Content/Description"></textarea>
+      <button mat-raised-button color="primary" (click)="onCreateNewDocument()">Submit</button>
+      <button mat-raised-button color="warn" (click)="onHideCreateDocument()">Hide</button>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -11,6 +11,7 @@ const coursesRoutes = require('./routes/courses')
 const schedulesRoutes = require('./routes/schedules')
 const userRoutes = require('./routes/user')
 const adminFunctions = require('./routes/admin-functions')
+const copyrightEnforcement = require('./routes/copyright-enforcement')
 
 const app = express();
 
@@ -46,5 +47,6 @@ app.use("/api/courses", coursesRoutes)
 app.use("/api/schedules", schedulesRoutes)
 app.use("/api/user", userRoutes)
 app.use("/api/admin", adminFunctions)
+app.use("/api/copyright-enforcement", copyrightEnforcement)
 
 module.exports = app;

@@ -41,7 +41,7 @@ import { AuthInterceptor } from './layout/body/auth/auth-interceptor';
 import { ErrorInterceptor  } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { ChangePasswordComponent } from './layout/body/auth/change-password/change-password.component';
-import { ViewUsersComponent } from './layout/body/auth/admin/view-users/view-users.component';
+import { AdminComponent } from './layout/body/auth/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +65,7 @@ import { ViewUsersComponent } from './layout/body/auth/admin/view-users/view-use
     TimetableComponent,
     ErrorComponent,
     ChangePasswordComponent,
-    ViewUsersComponent
+    AdminComponent
   ],
   imports: [
     BrowserModule,

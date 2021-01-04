@@ -75,6 +75,11 @@ router.post("/login", (req, res, next) => {
         message: "Authentication Failed!"
       });
     }
+    if (!user.active) {
+      res.status(404).jsnon({
+         message: "Please Contact Site Admin, your account is deactivated!"
+        })
+    }
     fetchedUser = user;
     return bcrypt.compare(req.body.password, user.password)
   }).then(result => {
@@ -95,12 +100,13 @@ router.post("/login", (req, res, next) => {
     )
     res.status(200).json({
       token: token,
+      isAdmin: fetchedUser.admin,
       expiresIn: 3600
     })
 
   }).catch(err => {
     return res.status(404).json({
-      message: "Invalid authentication credentials!"
+      message: "Please Contact Site Admin, your account is deactivated!"
     })
   })
 })

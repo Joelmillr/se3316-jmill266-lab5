@@ -1,5 +1,4 @@
 const express = require('express');
-const course = require('../models/course');
 
 const Course = require('../models/course')
 

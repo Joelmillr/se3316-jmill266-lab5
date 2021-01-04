@@ -1,7 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Schedule } from 'src/app/layout/schedules/schedule.model';
 import { SchedulesService } from 'src/app/services/schedules.service';
+import { AuthServiceService } from '../../auth-service.service';
 
 @Component({
   selector: 'app-edit-schedules',
@@ -9,33 +16,43 @@ import { SchedulesService } from 'src/app/services/schedules.service';
   styleUrls: ['./edit-schedules.component.css'],
 })
 export class EditSchedulesComponent implements OnInit, OnDestroy {
-  @Input() userID!: String;
+  userEmail!: String;
   @Input() courseMongoIdList: any[] = [];
   @Input() subjectList: any[] = [];
   @Input() catalog_nbrList: any[] = [];
 
   editSchedule: boolean = false;
-  userSchedules:Schedule[] = []
+  userSchedules: Schedule[] = [];
 
+  isAuth: boolean = false;
 
   private scheduleSub!: Subscription;
 
-  constructor(public scheduleService: SchedulesService) {
-
-  }
+  constructor(
+    public scheduleService: SchedulesService,
+    private authService: AuthServiceService
+  ) {}
 
   ngOnInit(): void {
-    this.scheduleService.getUserSchedules(this.userID)
-    this.scheduleSub = this.scheduleService.getUserScheduleListListener().subscribe((schedules:Schedule[]) => {
-      this.userSchedules = schedules
-    });
+    this.isAuth = this.authService.getIsAuth();
+    if (this.isAuth) {
+      this.userEmail = this.authService.getEmail()
+      this.scheduleService.getUserSchedules(this.userEmail);
+      this.scheduleSub = this.scheduleService
+        .getUserScheduleListListener()
+        .subscribe((schedules: Schedule[]) => {
+          this.userSchedules = schedules;
+        });
+    }
   }
 
-  updateScheduleList(){
-    this.scheduleService.getUserSchedules(this.userID)
+  updateScheduleList() {
+    this.scheduleService.getUserSchedules(this.userEmail);
   }
 
   ngOnDestroy() {
-    this.scheduleSub.unsubscribe();
+    if(this.isAuth){
+      this.scheduleSub.unsubscribe();
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { AuthServiceService } from '../auth-service.service';
 
 @Component({
   selector: 'app-sign-in-component',
@@ -13,8 +14,9 @@ export class SignInComponentComponent implements OnInit {
   password = ""
   fName = ""
   lName = ""
+  isLoading:boolean = false;
 
-  constructor(){
+  constructor(public authService: AuthServiceService){
     this.signedIn = false;
   }
   ngOnInit(): void {
@@ -23,24 +25,28 @@ export class SignInComponentComponent implements OnInit {
   onSignIn(){
     if(this.email == "" || this.password == "") alert("Please enter a valid email and password!")
     else{
-      const verifyAccount = {
-        "email": this.email,
-        "password": this.password
-      }
+      //const verifyAccount = {
+      //  "email": this.email,
+      //  "password": this.password
+      //}
       // Sign user in
+      this.isLoading = true;
+      this.authService.login(this.email, this.password)
     }
   }
 
   onSignUp() {
     if(this.email == "" || this.password == "" || this.fName == "" || this.lName == "") alert("Please enter all input fields respectively!")
     else{
-      const newAccount = {
-        "fName": this.fName,
-        "lName": this.lName,
-        "email": this.email,
-        "password": this.password
-      }
+      //const newAccount = {
+      //  "fName": this.fName,
+      //  "lName": this.lName,
+      //  "email": this.email,
+      //  "password": this.password
+      //}
       // Sign user up
+      this.isLoading = true;
+      this.authService.createUser(this.fName, this.lName, this.email, this.password)
     }
   }
 

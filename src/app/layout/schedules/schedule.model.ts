@@ -5,7 +5,7 @@ export interface Schedule {
   "public": Boolean;
   "title": String;
   "description": String;
-  "creatorID": String;
+  "creatorEmail": String;
   "courseList": [CourseList],
   "createdAt": any,
   "updatedAt": any,

@@ -10,8 +10,6 @@ export class ScheduleComponent implements OnInit {
   @Input() courseList: any[] = []
   constructor() { }
 
-  ngOnInit(): void {
-    console.log(this.courseList)
-  }
+  ngOnInit(): void {}
 
 }

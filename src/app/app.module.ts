@@ -12,7 +12,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatToolbarModule} from '@angular/material/toolbar';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatPaginatorModule} from '@angular/material/paginator'
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './layout/header/header.component';
@@ -29,12 +30,13 @@ import { NameContainerComponent } from './layout/body/auth/sign-in-component/nam
 import { SearchCoursesResultsComponent } from './layout/body/search-courses-component/search-courses-results/search-courses-results.component';
 import { PublicSchedulesComponent } from './layout/body/public-schedules/public-schedules.component';
 import { ScheduleComponent } from './layout/body/public-schedules/schedule/schedule.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserSchedulesComponent } from './layout/body/auth/user-schedules/user-schedules.component';
 import { CreateScheduleComponent } from './layout/body/auth/user-schedules/create-schedule/create-schedule.component';
 import { EditSchedulesComponent } from './layout/body/auth/user-schedules/edit-schedules/edit-schedules.component';
 import { TimetableComponent } from './layout/body/auth/user-schedules/edit-schedules/timetable/timetable.component'
 import { AppRoutingModule } from './app-routing.module';
+import { AuthInterceptor } from './layout/body/auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -73,9 +75,13 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,10 +1,11 @@
-<mat-card *ngIf="!signedIn">
+<mat-card *ngIf="!isLoading">
   <mat-tab-group mat-align-tabs="end">
-    <mat-tab label="Sign In">
+    <mat-tab label="Sign In"  >
       <app-email-container (enterEmail)="updateEmail($event)"></app-email-container>
       <app-password-container (enterPassword)="updatePassword($event)"></app-password-container>
       <button mat-raised-button color="primary" (click)="onSignIn()">Submit</button>
     </mat-tab>
+    <mat-spinner  *ngIf="isLoading"></mat-spinner>
     <mat-tab label="Sign Up">
       <app-email-container (enterEmail)="updateEmail($event)"></app-email-container>
       <app-password-container (enterPassword)="updatePassword($event)"></app-password-container>
@@ -13,3 +14,4 @@
     </mat-tab>
   </mat-tab-group>
 </mat-card>
+<mat-spinner class="load" *ngIf="isLoading"></mat-spinner>

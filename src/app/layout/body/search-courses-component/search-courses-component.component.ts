@@ -4,6 +4,7 @@ import { CoursesService } from '../../../services/courses.service'
 import { Observable, Subscription } from 'rxjs'
 import {map, startWith} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 
 
 @Component({
@@ -12,14 +13,18 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./search-courses-component.component.css']
 })
 export class SearchCoursesComponentComponent implements OnInit,OnDestroy {
-  @Input() courseMongoIdList: any[] = [];
-  @Input() subjectList: any[] = [];
-  @Input() catalog_nbrList: any[] = [];
-
   subject!: any;
   keyword!: any;
   courseList: Course[] = [];
+
+  totalCourses = 739;
+  coursesPerPage = 15;
+  currentPage = 1;
+  pageSizeOptions = [5,10,15,20]
+
   private courseSub!: Subscription;
+  isLoading:boolean = false
+
   constructor(public courseService:CoursesService) {
 
   }
@@ -27,8 +32,9 @@ export class SearchCoursesComponentComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.courseSub = this.courseService.getCourseListListener().subscribe((courses:Course[]) => {
       this.courseList = courses
+      this.isLoading = false
     });
-    
+
   }
 
   ngOnDestroy() {
@@ -40,12 +46,15 @@ export class SearchCoursesComponentComponent implements OnInit,OnDestroy {
       alert('Enter subject or keyword')
     }else{
       if((this.subject == "" || this.subject == undefined) && (this.keyword.length > 3)){
+        this.isLoading = true
         this.courseService.searchCourseByKeyword(this.keyword)
       }
       else if(this.keyword == "" || this.keyword == undefined){
+        this.isLoading = true
         this.courseService.searchCourseBySubject(this.subject)
       }
       else if(this.keyword.length > 3){
+        this.isLoading = true
         this.courseService.searchCourseBySubjectAndKeyword(this.subject, this.keyword)
       }
       else{
@@ -55,10 +64,19 @@ export class SearchCoursesComponentComponent implements OnInit,OnDestroy {
   }
 
   onShowAllCourses(){
-    this.courseService.getCourses()
+    this.isLoading = true
+    this.courseService.getCourses(this.coursesPerPage, this.currentPage)
+  }
+
+  onChangedPage(pageData: PageEvent){
+    this.isLoading = true
+    this.currentPage = pageData.pageIndex + 1;
+    this.coursesPerPage = pageData.pageSize;
+    this.courseService.getCourses(this.coursesPerPage, this.currentPage)
   }
 
   onHideCourses(){
+    this.isLoading = false
     this.courseList = []
   }
 }

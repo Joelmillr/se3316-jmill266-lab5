@@ -22,8 +22,9 @@ export class CoursesService {
   }
 
   // return all courses
-  getCourses() {
-    this.http.get<Course[]>(`${this.coursesURL}`)
+  getCourses(coursesPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${coursesPerPage}&page=${currentPage}`
+    this.http.get<Course[]>(`${this.coursesURL}` + queryParams)
     .subscribe((allCourses) => {
       this.courses = allCourses;
       this.courseList.next([...this.courses]);

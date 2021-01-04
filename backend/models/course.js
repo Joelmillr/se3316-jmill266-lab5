@@ -20,6 +20,6 @@ const courseSchema = mongoose.Schema({
     "descr": String,
   }],
   "catalog_description": String,
-}, {collection: 'Courses'})
+}, { collection: 'Courses' })
 
 module.exports = mongoose.model('Course', courseSchema);

@@ -47,7 +47,6 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.isAuth) {
-      this.authStatusSub.unsubscribe();
     }
   }
 
@@ -70,14 +69,10 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
         .createSchedule(this.scheduleName, schedule)
         .subscribe(
           (schedule) => {
-            alert(`${schedule.title} was created`);
             this.scheduleCreated.emit();
+            this.ngOnInit();
           },
-          (error) => {
-            alert(
-              `Error Creating Schedule! Please ensure that you do not reuse a schedule name`
-            );
-          }
+          (error) => {}
         );
       this.scheduleService.getUserSchedules(this.creatorEmail);
     }

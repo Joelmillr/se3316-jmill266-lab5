@@ -1,43 +1,64 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  OnDestroy,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthServiceService } from '../auth-service.service';
 
 @Component({
   selector: 'app-sign-in-component',
   templateUrl: './sign-in-component.component.html',
-  styleUrls: ['./sign-in-component.component.css']
+  styleUrls: ['./sign-in-component.component.css'],
 })
-export class SignInComponentComponent implements OnInit {
+export class SignInComponentComponent implements OnInit, OnDestroy {
   signedIn: boolean;
   @Output() signIn = new EventEmitter();
   @Output() signUp = new EventEmitter();
-  email = ""
-  password = ""
-  fName = ""
-  lName = ""
-  isLoading:boolean = false;
+  email = '';
+  password = '';
+  fName = '';
+  lName = '';
+  isLoading: boolean = false;
 
-  constructor(public authService: AuthServiceService){
+  private authStatusSub!: Subscription;
+
+  constructor(public authService: AuthServiceService) {
     this.signedIn = false;
   }
   ngOnInit(): void {
+    this.authStatusSub = this.authService
+      .getAuthStatusListener()
+      .subscribe((authStatus) => {
+        this.isLoading = false;
+      });
   }
 
-  onSignIn(){
-    if(this.email == "" || this.password == "") alert("Please enter a valid email and password!")
-    else{
+  onSignIn() {
+    if (this.email == '' || this.password == '')
+      alert('Please enter a valid email and password!');
+    else {
       //const verifyAccount = {
       //  "email": this.email,
       //  "password": this.password
       //}
       // Sign user in
       this.isLoading = true;
-      this.authService.login(this.email, this.password)
+      this.authService.login(this.email, this.password);
     }
   }
 
   onSignUp() {
-    if(this.email == "" || this.password == "" || this.fName == "" || this.lName == "") alert("Please enter all input fields respectively!")
-    else{
+    if (
+      this.email == '' ||
+      this.password == '' ||
+      this.fName == '' ||
+      this.lName == ''
+    )
+      alert('Please enter all input fields respectively!');
+    else {
       //const newAccount = {
       //  "fName": this.fName,
       //  "lName": this.lName,
@@ -46,24 +67,32 @@ export class SignInComponentComponent implements OnInit {
       //}
       // Sign user up
       this.isLoading = true;
-      this.authService.createUser(this.fName, this.lName, this.email, this.password)
+      this.authService.createUser(
+        this.fName,
+        this.lName,
+        this.email,
+        this.password
+      );
     }
   }
 
-  updateEmail(email:string){
+  updateEmail(email: string) {
     this.email = email;
   }
 
-  updatePassword(password:string){
+  updatePassword(password: string) {
     this.password = password;
   }
 
-  updatefName(fName:string){
+  updatefName(fName: string) {
     this.fName = fName;
   }
 
-  updatelName(lName:string){
+  updatelName(lName: string) {
     this.lName = lName;
   }
 
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
+  }
 }

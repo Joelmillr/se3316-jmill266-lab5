@@ -6,8 +6,9 @@ export interface Schedule {
   "title": String;
   "description": String;
   "creatorEmail": String;
-  "courseList": [CourseList],
-  "createdAt": any,
-  "updatedAt": any,
-  "__v": any
+  "creator": String;
+  "courseList": [CourseList];
+  "createdAt": any;
+  "updatedAt": any;
+  "__v": any;
 }

@@ -58,7 +58,6 @@ export class TimetableComponent implements OnInit {
           .updateSchedule(false, this.scheduleID, this.creatorID, courseID)
           .subscribe(
             (schedule) => {
-              alert(`${schedule.title} was updated`);
               this.scheduleListUpdate.emit()
             },
             (error) => {
@@ -112,7 +111,6 @@ export class TimetableComponent implements OnInit {
             .updateSchedule(true, this.scheduleID, this.creatorID, courseID)
             .subscribe(
               (schedule) => {
-                alert(`${schedule.title} was updated`);
                 this.scheduleListUpdate.emit();
               },
               (error) => {
@@ -123,9 +121,7 @@ export class TimetableComponent implements OnInit {
             );
         });
     } else {
-      alert(
-        `${this.subject} ${this.catalog_nbr} is not a real course, please ensure you have entered all fields correct`
-      );
+      alert('This is not a real Course! Please ensure you have entered all fields accordingly')
     }
   }
 
@@ -143,7 +139,6 @@ export class TimetableComponent implements OnInit {
       newName: this.newScheduleName,
       creatorID: this.creatorID,
     }).subscribe(message => {
-      alert(message.message)
       this.scheduleListUpdate.emit();
     });
   }
@@ -162,7 +157,6 @@ export class TimetableComponent implements OnInit {
       newDescription: this.newScheduleDescription,
       creatorID: this.creatorID,
     }).subscribe(message => {
-      alert(message.message)
       this.scheduleListUpdate.emit();
     });
   }
@@ -180,7 +174,6 @@ export class TimetableComponent implements OnInit {
       visibility: this.newScheduleVisibility,
       creatorID: this.creatorID,
     }).subscribe(message => {
-      alert(message.message)
       this.scheduleListUpdate.emit();
     });
   }
@@ -196,7 +189,6 @@ export class TimetableComponent implements OnInit {
   onDeleteConfirm() {
     //Delete Schedule
     this.schedulesService.deleteSchedule(this.scheduleID).subscribe(message => {
-      alert(message.message)
       this.scheduleListUpdate.emit();
     })
   }

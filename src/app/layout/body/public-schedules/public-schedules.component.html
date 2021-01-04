@@ -9,7 +9,7 @@
       <mat-expansion-panel *ngFor="let schedule of publicSchedules">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{ schedule.title }}, ({{ schedule.courseList.length }} courses)... Designed by "creator"
+            {{ schedule.title }}, ({{ schedule.courseList.length }} courses)... Designed by {{ schedule.creatorEmail.substring(0 , schedule.creatorEmail.lastIndexOf("@")) }}
           </mat-panel-title>
           <mat-panel-description>
             <p *ngIf="schedule.description.length <= 0 || schedule.description != undefined">

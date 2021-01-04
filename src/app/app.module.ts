@@ -14,6 +14,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator'
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './layout/header/header.component';
@@ -37,6 +38,10 @@ import { EditSchedulesComponent } from './layout/body/auth/user-schedules/edit-s
 import { TimetableComponent } from './layout/body/auth/user-schedules/edit-schedules/timetable/timetable.component'
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptor } from './layout/body/auth/auth-interceptor';
+import { ErrorInterceptor  } from './error-interceptor';
+import { ErrorComponent } from './error/error.component';
+import { ChangePasswordComponent } from './layout/body/auth/change-password/change-password.component';
+import { ViewUsersComponent } from './layout/body/auth/admin/view-users/view-users.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +63,9 @@ import { AuthInterceptor } from './layout/body/auth/auth-interceptor';
     CreateScheduleComponent,
     EditSchedulesComponent,
     TimetableComponent,
+    ErrorComponent,
+    ChangePasswordComponent,
+    ViewUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -77,11 +85,14 @@ import { AuthInterceptor } from './layout/body/auth/auth-interceptor';
     MatCheckboxModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }

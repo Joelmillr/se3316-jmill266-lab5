@@ -19,6 +19,9 @@
     <a mat-button routerLink="/sign-in-sign-up" routerLinkActive="mat-accent">Sign-In/Sign-Up</a>
   </div>
 
+  <div *ngIf="isAuth">
+    <a mat-button routerLink="/change-password" routerLinkActive="mat-accent">Change Password</a>
+  </div>
 
   <div *ngIf="isAuth">
     <button mat-raised-button (click)="onLogout()">Logout</button>

@@ -1,6 +1,7 @@
 const express = require("express")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const checkAuth = require('../middleware/check-auth')
 
 const User = require("../models/user")
 
@@ -10,7 +11,7 @@ const router = express.Router()
 router.post("/signup", (req, res, next) => {
   // fName, lName, email, password, (active), status
   //bycrpt.hash(req.body.email, 10).then(hash=>{
-    // Send this hash to email
+  // Send this hash to email
   //})
 
   bcrypt.hash(req.body.password, 10)
@@ -25,14 +26,49 @@ router.post("/signup", (req, res, next) => {
         res.send(result)
       })
         .catch(err => {
-          res.status(500).json({ error: err })
+          res.status(500).json({ message: 'Invalid authentication credentials' })
         })
     })
+})
+
+// Change user password
+router.put("/change-password", checkAuth, (req, res, next) => {
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+  const userID = req.userData.userId
+  User.findOne({ _id: userID }).then(user => {
+    if (!user) {
+      res.status(404).json({
+        message: "Authentication Failed!"
+      });
+    }
+    fetchedUser = user;
+    return bcrypt.compare(oldPassword, user.password)
+  }).then(result => {
+    if (!result) {
+      res.status(404).jsnon({
+        message: "Wrong Password!"
+      })
+    } else {
+      bcrypt.hash(newPassword, 10)
+        .then(hash => {
+          User.updateOne({ _id: userID }, { password: hash }).then(result => {
+            if (result.nModified > 0) {
+              res.status(200).json({ message: "User password updated" })
+            }
+            else {
+              res.status(500).json({ message: 'Error, users password was not changed' });
+            }
+          })
+        })
+    }
+  })
 })
 
 // Old user authentication
 router.post("/login", (req, res, next) => {
   let fetchedUser;
+
   User.findOne({ email: req.body.email }).then(user => {
     if (!user) {
       return res.status(404).jsnon({
@@ -50,20 +86,21 @@ router.post("/login", (req, res, next) => {
     // JWT
     const token = jwt.sign(
       {
-        fName: fetchedUser.fName,
-        lName: fetchedUser.lName,
         email: fetchedUser.email,
+        admin: fetchedUser.admin,
         userId: fetchedUser._id
       },
       '3316A_Lab5_jmill266_secret',
       { expiresIn: '1h' }
     )
     res.status(200).json({
-      token: token
+      token: token,
+      expiresIn: 3600
     })
+
   }).catch(err => {
     return res.status(404).json({
-      message: "Authentication Failed!"
+      message: "Invalid authentication credentials!"
     })
   })
 })

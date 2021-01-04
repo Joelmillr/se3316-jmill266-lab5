@@ -4,11 +4,13 @@
 
 const express = require('express');
 const bodyParser = require("body-parser")
+const mongoSanitize = require('express-mongo-sanitize');
 const mongoose = require('mongoose')
 
 const coursesRoutes = require('./routes/courses')
 const schedulesRoutes = require('./routes/schedules')
 const userRoutes = require('./routes/user')
+const adminFunctions = require('./routes/admin-functions')
 
 const app = express();
 
@@ -18,11 +20,13 @@ const connection = mongoose.connection;
 
 connection.once("open", function () {
   console.log("Connected to database!");
-}).catch(()=>{
+}).catch(() => {
   console.log("Connection to database failed!")
 });
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(mongoSanitize());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', `*`);
@@ -41,5 +45,6 @@ app.use((req, res, next) => {
 app.use("/api/courses", coursesRoutes)
 app.use("/api/schedules", schedulesRoutes)
 app.use("/api/user", userRoutes)
+app.use("/api/admin", adminFunctions)
 
 module.exports = app;

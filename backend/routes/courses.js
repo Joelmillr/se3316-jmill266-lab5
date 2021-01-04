@@ -10,9 +10,9 @@ router.get('', (req, res) => {
   const pagesize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const courseQuery = Course.find()
-  if(pagesize && currentPage){
+  if (pagesize && currentPage) {
     courseQuery.skip(pagesize * (currentPage - 1))
-    .limit(pagesize)
+      .limit(pagesize)
   }
 
   courseQuery.then(courseList => {

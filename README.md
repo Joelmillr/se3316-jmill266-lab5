@@ -1,5 +1,5 @@
 # Lab5
-
+Check out -> http://awslab5se3316bucket.s3-website.us-east-2.amazonaws.com/sign-in-sign-up
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.3.
 
 ## Development server
